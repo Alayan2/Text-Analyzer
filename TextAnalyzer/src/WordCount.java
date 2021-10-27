@@ -30,20 +30,22 @@ public class WordCount {
 	 * @param args
 	 * @throws FileNotFoundException 
 	 */
+	
+	static ArrayList<WordFrequencyPairing> textAnalyzer = new ArrayList<WordFrequencyPairing>();
+
 
 	public static void main(String[] args) throws FileNotFoundException {
 
 		// read whole file as String 
 		String data = "";
 		try {
-			data = new String(Files.readAllBytes(Paths.get("1065-h.htm")));
+			data = new String(Files.readAllBytes(Paths.get(wordOcurrencesGUI.fileName)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		String[] textArray = clean(data);
 
-		ArrayList<WordFrequencyPairing> textAnalyzer = new ArrayList<WordFrequencyPairing>();
 
 		Integer count = 0;
 		for (int i = 0; i < textArray.length; i++) {
@@ -67,8 +69,8 @@ public class WordCount {
 		
 	    //Sublist to List
 	     List<WordFrequencyPairing> list = textAnalyzer.subList(0, 20);
-	     System.out.println("Top 20 Most Frequently Used Words in 'The Raven': "+list);
-	     System.out.println("\n" + "All Word Frequencies in 'The Raven': "+textAnalyzer.toString());
+//	     System.out.println("Top 20 Most Frequently Used Words in 'The Raven': "+list);
+//	     System.out.println("\n" + "All Word Frequencies in 'The Raven': "+textAnalyzer.toString());
 
 	}
 
