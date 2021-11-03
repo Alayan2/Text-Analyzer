@@ -30,7 +30,7 @@ public class WordFrequencyPairing {
 	  
 	  @Override
 	    public String toString(){
-	        return  "\n" + count + ": " + word ; 
+	        return  count + ": " + word ; 
 	    }
 }
 

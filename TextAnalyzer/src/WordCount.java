@@ -25,71 +25,67 @@ import java.util.List;
  *
  */
 public class WordCount {
+	
+	static ArrayList<WordFrequencyPairing> textAnalyzer = new ArrayList<WordFrequencyPairing>();
 
 	/**
 	 * @param args
 	 * @throws FileNotFoundException 
 	 */
 	
-	static ArrayList<WordFrequencyPairing> textAnalyzer = new ArrayList<WordFrequencyPairing>();
-
-
 	public static void main(String[] args) throws FileNotFoundException {
 
 		// read whole file as String 
-		String data = "";
-		try {
-			data = new String(Files.readAllBytes(Paths.get(wordOcurrencesGUI.fileName)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String data = readFileToString(wordOcurrencesGUI.fileName);
 
-		String[] textArray = clean(data);
-
-
-		Integer count = 0;
-		for (int i = 0; i < textArray.length; i++) {
-			if(!(textAnalyzer.toString().contains(textArray[i] + " "))) {
-				for (int j = 1; j < textArray.length; j++) {
-					if(textArray[i].equals(textArray[j])) {
-						count++;
-					}
-				}
-			}
-			String newText = textArray[i].toString();
-			if(!(textAnalyzer.toString().contains(count + ": " + textArray[i]))) {
-				textAnalyzer.add(new WordFrequencyPairing(count, newText));
-			}
-			count = 0;
-		}
-
-		Comparator<WordFrequencyPairing> countComparator = (c1, c2) -> (int) (c1.getCount() - c2.getCount());
-
-		textAnalyzer.sort(Collections.reverseOrder(countComparator));	    
+		// remove extraneous symbols and text
+		String cleanText = clean(data);
 		
-	    //Sublist to List
-	     List<WordFrequencyPairing> list = textAnalyzer.subList(0, 20);
-//	     System.out.println("Top 20 Most Frequently Used Words in 'The Raven': "+list);
-//	     System.out.println("\n" + "All Word Frequencies in 'The Raven': "+textAnalyzer.toString());
+		// split string by white space and store as array
+		String[] textArray = toStringArray(cleanText);
+		
+		// build ArrayList of word frequency count
+		textAnalyzer = buildWordFrequencyArrayList(textArray);
+		
+		// sort ArrayList in descending order
+		sort(textAnalyzer);
 
 	}
 
-
-	/**Return an array of the words in a text file 
-	 * removes all html tags, punctuation and split by spaces
-	 * @param textFile, file of text separated by whitespace
-	 * @return array of words in textFile
+	/**Return a string of the words in a text file 
+	 *
+	 * @param filename, name of the file
+	 * @return string of words in textFile
 	 */
-	public static String[] clean(String textFile){
+	public static String readFileToString(String fileName){
+		
+		String data = "";
+		try {
+			data = new String(Files.readAllBytes(Paths.get(fileName)));
+			return data;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
+	/**Return a string of the words in a text file,
+	 * removes all html tags, punctuation
+	 * @param textFile, file of text separated by whitespace
+	 * @return string of words in textFile
+	 */
+	public static String clean(String textFile){
 		if(textFile == null || textFile.isEmpty()){
 			return null;
 		}
 
+		int a = textFile.indexOf("</big>");
+		
 		//removes text above poem title
-		String textFile2 = textFile.substring(textFile.indexOf("/big>"));
-
+		String textFile2 = textFile.substring(a);
+		
 		//removes text after poem
-		String textFile3 = textFile2.substring(0, textFile2.indexOf("***"));
+		String textFile3 = textFile2.substring(6, textFile2.indexOf("***"));
 
 		//removes all html tags between '< >'
 		textFile3 = textFile3.replaceAll("\\<.*?\\>", "" );
@@ -101,8 +97,59 @@ public class WordCount {
 		String textFile5 = textFile4.replaceAll("\\p{Punct}", " ");
 
 		//removes all remaining punctuation, converts to all lower case letters, and splits string for array
-		String[] words = textFile4.replaceAll("[^a-zA-Z ]", " ").toLowerCase().split("\\s+");
+		String words = textFile4.replaceAll("[^a-zA-Z ]", " ").toLowerCase();
 
 		return words;
 	}
+	
+	/**Return an array of the words in a text file,
+	 * 
+	 * @param stringName, string of text separated by whitespace
+	 * @return array of strings in stringName
+	 */
+	public static String[] toStringArray(String stringName){
+		if(stringName == null || stringName.isEmpty()){
+			return null;
+		}
+		String[] words = stringName.split("\\s+");
+		return words;
+	}
+	
+	
+	/**Return an ArrayList of the word frequency 
+	 * counts in a string.
+	 *
+	 * @param filename, name of the file
+	 * @return string of words in textFile
+	 */
+	public static ArrayList buildWordFrequencyArrayList(String[] stringArray) {
+		
+		Integer count = 1;
+		for (int i = 0; i < stringArray.length; i++) {
+			if(!(textAnalyzer.toString().contains(stringArray[i] + " "))) {
+				for (int j = 1; j < stringArray.length; j++) {
+					if(stringArray[i].equals(stringArray[j])) {
+						count++;
+					}
+				}
+			}
+			String newText = stringArray[i].toString();
+//			if(!(textAnalyzer.toString().contains(count + ": " + stringArray[i]))) {
+			if(!(textAnalyzer.toString().contains(stringArray[i]))) {
+
+				textAnalyzer.add(new WordFrequencyPairing(count, newText));
+			}
+			count = 0;
+		}
+		return textAnalyzer;
+	}
+	
+	public static void sort(ArrayList textAnalyzerSort) {
+		
+		Comparator<WordFrequencyPairing> countComparator = (c1, c2) -> (int) (c1.getCount() - c2.getCount());
+		textAnalyzerSort.sort(Collections.reverseOrder(countComparator));	
+	}
+	
+
+	
 }
