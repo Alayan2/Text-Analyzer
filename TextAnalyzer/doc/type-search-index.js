@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"<Unnamed>","l":"WordFrequencyPairing"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"org.eclipse.wb.swt","l":"SWTResourceManager"},{"p":"<Unnamed>","l":"WordCount"},{"p":"<Unnamed>","l":"WordCountTest"},{"p":"<Unnamed>","l":"WordFrequencyPairing"},{"p":"<Unnamed>","l":"wordOcurrencesGUI"}]

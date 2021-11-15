@@ -71,6 +71,7 @@ public class WordCount {
 	
 	/**Return a string of the words in a text file,
 	 * removes all html tags, punctuation
+	 * 
 	 * @param textFile, file of text separated by whitespace
 	 * @return string of words in textFile
 	 */
@@ -143,6 +144,10 @@ public class WordCount {
 		}
 		return textAnalyzer;
 	}
+	
+	/**Sorts object by word frequency count in 
+	 * descending order.
+	 */
 	
 	public static void sort(ArrayList textAnalyzerSort) {
 		

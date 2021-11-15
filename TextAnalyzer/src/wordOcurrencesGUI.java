@@ -29,7 +29,12 @@ public class wordOcurrencesGUI extends Application  {
 
 	static String fileName;
 
-
+	/**
+	 * 
+	 * @param stage
+	 * @throws FileNotFoundException 
+	 */
+	
 	public void start(Stage stage) throws FileNotFoundException {
 
 		//congifure grid
@@ -104,7 +109,7 @@ public class wordOcurrencesGUI extends Application  {
 
 
 
-		//on WordCount() button click, generate tableView
+		//on button click WordCount(), generate tableView
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -117,7 +122,10 @@ public class wordOcurrencesGUI extends Application  {
 				TableView<WordFrequencyPairing> table;
 
 				try {
+					
+					//fill table with word frequency count
 					table = setTableView(fileName, grid);
+					
 					//configure VBox for TableView
 					VBox vbox = new VBox();
 					vbox.setSpacing(5);
@@ -126,13 +134,16 @@ public class wordOcurrencesGUI extends Application  {
 					vbox.getStyleClass().addAll("table-view");
 					vbox.getStyleClass().addAll("vbox");
 					vbox.setEffect(shadow);
+					
 					btn.setVisible(false);
+					
 					grid.add(vbox, 0, 5);
 					grid.add(hbresetBtn, 0, 7);
+					
 					stage.setHeight(700);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					System.out.println("did i make it?");
+					
+					// catch invalid file name error
 				    Platform.runLater(() -> {
 
 					Label e1ErrorMessage = new Label("Invalid File Name.");
@@ -140,7 +151,6 @@ public class wordOcurrencesGUI extends Application  {
 					e1ErrorMessage.setMinHeight(50);
 					e1ErrorMessage.setTextAlignment(TextAlignment.CENTER);
 					e1ErrorMessage.setAlignment(Pos.CENTER);
-
 					e1ErrorMessage.getStyleClass().add("error-message");
 					grid.add(e1ErrorMessage, 0, 7);
 				    });
@@ -171,10 +181,24 @@ public class wordOcurrencesGUI extends Application  {
 		stage.setScene(scene);
 		stage.show();
 	}
+	
+	/**
+	 * @param args
+	 */
+	
 	public static void main(String args[]){
 		launch(args);
 	}
 
+	/**
+	 * Returns an TableView populated with an ObservableList
+	 * of word frequency pairings 
+	 * 
+	 * @param textFile	the filename entered into the TextField
+	 * @param grid
+	 * @throws FileNotFoundException 
+	 */
+	
 	public static TableView<WordFrequencyPairing> setTableView(String fileName, GridPane grid) throws FileNotFoundException {
 
 		//Creating a table view
@@ -210,11 +234,21 @@ public class wordOcurrencesGUI extends Application  {
 		return table;
 
 	}
+	
+	/**
+	 * Returns an ObservableList of a WordFrequency pairing 
+	 * 
+	 * @param textFile
+	 * @param grid
+	 * @throws FileNotFoundException 
+	 * 
+	 */
+	
 	public static ObservableList<WordFrequencyPairing> calculateWordFrequency(String textFile, GridPane grid) throws FileNotFoundException{
-		//TODO convert textAnalyzer to ObservableList to populate TableView
+
 		ObservableList<WordFrequencyPairing> allData = FXCollections.observableArrayList(WordCount.textAnalyzer);
 
-		System.out.println(textFile);
+		System.out.println(textFile); 
 		WordCount.main(null);
 		allData = FXCollections.observableArrayList(WordCount.textAnalyzer);
 		return allData;

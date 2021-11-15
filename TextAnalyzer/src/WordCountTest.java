@@ -31,7 +31,6 @@ public class WordCountTest {
 		// Verify the content
 		Assert.assertEquals("hello world", s);
 
-		//Note: File is guaranteed to be deleted after the test finishes.
 	}
 
 	@Test
